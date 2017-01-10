@@ -23,15 +23,27 @@ module.exports = function (config) {
             'test/function.bind.shim.js',
             'test/unit/**/*.js'
         ],
-        plugins: ['karma-webpack', 'karma-jasmine', 'karma-chrome-launcher', 'karma-phantomjs-launcher'],
+        plugins: [
+            'karma-babel-preprocessor',
+            'karma-webpack',
+            'karma-jasmine',
+            'karma-chrome-launcher',
+            'karma-phantomjs-launcher',
+        ],
         preprocessors: {
-            'ng-admin.js': 'webpack',
-            'test/**/*.js': 'webpack'
+            'ng-admin.js': ['webpack'],
+            'test/**/*.js': ['webpack', 'babel'],
         },
         webpackMiddleware: {
             noInfo: true,
             devtool: 'inline-source-map' //just do inline source maps instead of the default
         },
-        webpack: webpackConfig
+        webpack: webpackConfig,
+        babelPreprocessor: {
+            options: {
+                presets: ['es2015', 'stage-2'],
+                plugins: ['add-module-exports'],
+            },
+        },
     });
 };
